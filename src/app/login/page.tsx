@@ -74,6 +74,7 @@ const LoginPage = () => {
             email,
             url,
           });
+          setMessage("password reset email sent please check your email")
           break;
         case MODE.EMAIL_VERIFICATION:
           response = await wixClient.auth.processVerification({
@@ -99,6 +100,25 @@ const LoginPage = () => {
           router.push("/");
 
           break;
+        case LoginState.FAILURE:
+          if (
+            response.errorCode === "invalidEmail" ||
+            response.errorCode == "invalidPassword"
+          ) {
+            setError("invalid email or password");
+          } else if (response.errorCode === "emailAlreadyExists") {
+            setError("email already exists");
+          } else if (response.errorCode === "resetPassword") {
+            setError("you need to reset your password");
+          } else {
+            setError("something went wrong");
+          }
+          break;
+        case LoginState.EMAIL_VERIFICATION_REQUIRED:
+          setMode(MODE.EMAIL_VERIFICATION);
+          break;
+        case LoginState.OWNER_APPROVAL_REQUIRED:
+          setMessage("your account is pending approval");
         default:
           break;
       }

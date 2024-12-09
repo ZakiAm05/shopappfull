@@ -38,7 +38,7 @@ const ProductList = async ({
       productQuery.descending(sortBy);
     }
   }
-  const res = await productQuery.find();
+  const res =await productQuery.find();
   return (
     <div className="mt-12 flex gap-x-8 gap-y-16 justify-between flex-wrap">
       {res.items.map((product: products.Product) => (
